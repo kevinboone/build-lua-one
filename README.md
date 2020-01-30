@@ -47,6 +47,18 @@ There is no need to try to include specific Lua headers, as they won't
 exist, and all the parts of Lua that are meaningful to an application 
 are (should be) in `lua-one.h`.
 
+You can use this utility to override the implementations of
+`lua_lock` and `lua_unlock` when building, without changing the
+source. Chage the `$CC` line to:
+
+    $CC -Dlua_lock=my_lua_lock -Dlua_unlock=my_lua_unlock -c ...
+
+and then provide implementations of `my_lua_lock` and `my_lua_unlock`.
+These functions take a `lua_State *` as an argument, and return no value.
+This step is only necessary if you're running multiple threads in the 
+same Lua context, and want to provide locking.
+
+
 ## Things to watch for
 
 An application should initialize Lua like this:
